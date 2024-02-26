@@ -41,8 +41,10 @@ export const signin = async (req, res) => {
         const user = await User.findOne({ userName })
         if (!user) return res.status(404).json({ message: "User doesn't exist" })
 
-        const isPasswordCorrect = await bcrypt.compare(password, user.password)
+        const isPasswordCorrect = await bcrypt.compare(password, user?.password || "")
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" })
+
+        generateToken(user._id, res);
 
         res.status(200).json({ user })
     } catch (error) {
