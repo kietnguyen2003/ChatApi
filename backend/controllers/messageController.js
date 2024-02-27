@@ -1,5 +1,5 @@
-import Conversation from "../models/conservationModel.js";
-import Message from "../models/messageModel.js"; 
+import Conservation from "../models/conservationModel.js";
+import Message from "../models/messageModel.js";
 
 export const sendMessages = async (req, res) => {
     try {
@@ -7,12 +7,12 @@ export const sendMessages = async (req, res) => {
         const receiverId = req.params.id;
         const senderId = req.user._id;
 
-        let conservation = await Conversation.findOne({
-            participants: {$all: [senderId, receiverId]}
+        let conservation = await Conservation.findOne({
+            participants: { $all: [senderId, receiverId] }
         })
 
         if (!conservation) {
-            conservation = await Conversation.create({
+            conservation = await Conservation.create({
                 participants: [senderId, receiverId]
             })
         }
@@ -22,13 +22,30 @@ export const sendMessages = async (req, res) => {
             receiverId,
             message
         })
-        if (conservation) {
+        if (newMessage) {
             conservation.messages.push(newMessage);
         }
         await Promise.all([newMessage.save(), conservation.save()]);
         res.status(200).json({ message: "Message sent successfully" })
     } catch (error) {
         console.log("Error in sendMessages: ", error.message)
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
+export const getMessages = async (req, res) => {
+    try {
+        const receiverId = req.params.id;
+        const senderId = req.user._id;
+        const conservation = await Conservation.findOne({
+            participants: { $all: [senderId, receiverId] }
+        }).populate("messages");
+        if (!conservation) {
+            return res.status(200).json({ messages: [] })
+        }
+        res.status(200).json({ messages: conservation.messages })
+    } catch (error) {
+        console.log("Error in getMessages: ", error.message)
         res.status(500).json({ message: "Internal Server Error" })
     }
 }
