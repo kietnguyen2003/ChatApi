@@ -1,9 +1,11 @@
 import express from "express"
-import authRouter from "./routes/authRouter.js"
-import messageRouter from "./routes/messageRouter.js"
 import dotenv from "dotenv"
 import connectToMongoose from "./db/connectToMongoose.js"
 import cookieParser from "cookie-parser"
+
+import authRouter from "./routes/authRouter.js"
+import messageRouter from "./routes/messageRouter.js"
+import userRouter from "./routes/userRouter.js"
 dotenv.config()
 
 const app = express()
@@ -18,6 +20,7 @@ app.use(cookieParser())
 
 app.use("/api/auth", authRouter)
 app.use("/api/message", messageRouter)
+app.use("/api/user", userRouter)
 
 app.listen(PORT, () => {
     connectToMongoose();
