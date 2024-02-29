@@ -41,9 +41,9 @@ export const getMessages = async (req, res) => {
             participants: { $all: [senderId, receiverId] }
         }).populate("messages");
         if (!conservation) {
-            return res.status(200).json({ messages: [] })
+            return res.status(201).json({ messages: [] })
         }
-        res.status(200).json({ messages: conservation.messages })
+        res.status(201).json({ messages: conservation.messages })
     } catch (error) {
         console.log("Error in getMessages: ", error.message)
         res.status(500).json({ message: "Internal Server Error" })

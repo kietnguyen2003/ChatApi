@@ -46,7 +46,7 @@ export const signin = async (req, res) => {
 
         generateToken(user._id, res);
 
-        res.status(200).json({ user })
+        res.status(201).json({ user })
     } catch (error) {
         console.log("Internal Server Error")
         res.status(500).json({ message: error.message })
@@ -58,7 +58,7 @@ export const logout = (req, res) => {
         res.cookie('jwt', '', {
             maxAge: 0,
         });
-        res.status(200).json({ message: "Logged out successfully" })
+        res.status(201).json({ message: "Logged out successfully" })
     } catch (error) {
         console.log("Internal Server Error")
         res.status(500).json({ message: error.message })
