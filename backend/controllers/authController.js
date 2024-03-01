@@ -7,9 +7,9 @@ export const signup = async (req, res) => {
         const { fullName, userName, password, confirmPassword, gender } = req.body
 
         const existingUser = await User.findOne({ userName })
-        if (existingUser) return res.status(400).json({ message: "User already exists" })
+        if (existingUser) return res.status(404).json({ message: "User already exists" })
 
-        if (password !== confirmPassword) return res.status(400).json({ message: "Password doesn't match" })
+        if (password !== confirmPassword) return res.status(404).json({ message: "Password doesn't match" })
 
         //hash password
         const salt = await bcrypt.genSalt(10)
@@ -42,11 +42,11 @@ export const signin = async (req, res) => {
         if (!user) return res.status(404).json({ message: "User doesn't exist" })
 
         const isPasswordCorrect = await bcrypt.compare(password, user?.password || "")
-        if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" })
+        if (!isPasswordCorrect) return res.status(404).json({ message: "Invalid credentials" })
 
         generateToken(user._id, res);
 
-        res.status(201).json({ user })
+        res.status(201).json({ user, message: "Logged in successfully"})
     } catch (error) {
         console.log("Internal Server Error")
         res.status(500).json({ message: error.message })

@@ -6,6 +6,6 @@ const router = express.Router()
 router
     .post("/signup", signup)
     .post("/signin", signin)
-    .get("/logout", logout)
+    .post("/logout", logout)
 
 export default router
