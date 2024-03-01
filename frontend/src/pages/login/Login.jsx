@@ -4,16 +4,14 @@ import useSignin from "../../hooks/useSignin";
 
 const Login = () => {
 
-    const [inputs, setInput] = useState({
-        userName: "",
-        password: ""
-    })
+    const [userName, setUserName] = useState("")
+    const [password, setPassword] = useState("")
 
     const [loading, signin] = useSignin();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await signin(inputs)
+        await signin({ userName, password })
     }
 
     return <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
@@ -29,14 +27,14 @@ const Login = () => {
             {/*   action="/api/auth/signup" method="POST" */}
             <form onSubmit={handleSubmit}>
                 <div>
-                    <input type="text" value={inputs.userName}
+                    <input type="text" value={userName}
                         placeholder="Username"
-                        onChange={(e) => setInput({ ...inputs, userName: e.target.value })}
+                        onChange={(e) => setUserName(e.target.value)}
                         className="input w-full max-w-xs m-1" />
                 </div>
                 <div>
-                    <input type="password" value={inputs.password}
-                        onChange={(e) => setInput({ ...inputs, password: e.target.value })}
+                    <input type="password" value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="Password" className="input w-full max-w-xs m-1" />
                 </div>
                 <div>

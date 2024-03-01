@@ -4,7 +4,7 @@ import Login from './pages/login/Login' // Change this line to import Login from
 import SignUp from './pages/signup/Signup'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import { useAuthContext } from '../context/AuthContext'
+import { useAuthContext } from './context/AuthContext'
 
 function App() {
   const { authUser } = useAuthContext();

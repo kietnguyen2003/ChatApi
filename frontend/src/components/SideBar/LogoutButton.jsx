@@ -11,10 +11,10 @@ const LogoutButton = () => {
     }
 
     return (
-        <form onSubmit={handleLogout}>
-            <button className="mt-auto">
+        <form onSubmit={handleLogout} className="mt-auto">
+            <button>
                 {
-                    !loading ? (<CiLogout className="w-6 h-6 cursor-pointer"></CiLogout>) :
+                    !loading ? (<CiLogout className="w-7 h-7 font-bold cursor-pointer"></CiLogout>) :
                         (
                             <span className="loading loading-spinner"></span>
                         )

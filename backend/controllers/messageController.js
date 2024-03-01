@@ -49,3 +49,16 @@ export const getMessages = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" })
     }
 }
+
+export const getConversations = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const conversations = await Conservation.find({
+            participants: userId
+        });
+        res.status(201).json(conversations);
+    } catch (error) {
+        console.log("Error in getConversations: ", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
