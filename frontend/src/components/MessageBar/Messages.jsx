@@ -1,10 +1,11 @@
 import useGetMessages from "../../hooks/useGetMessages"
 import Message from "./Message"
 import MessagesSkeletons from "../skeletons/MessagesSkeletons"
+import useListenMessgaes from "../../hooks/useListenMessage";
 
 const Messages = () => {
     const { loading, messages } = useGetMessages();
-
+    useListenMessgaes();
     return (
 
         <div className="px-4 flex-1 overflow-auto">

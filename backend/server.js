@@ -3,12 +3,12 @@ import dotenv from "dotenv"
 import connectToMongoose from "./db/connectToMongoose.js"
 import cookieParser from "cookie-parser"
 
+import {app, server} from "./socket/socket.js"
 import authRouter from "./routes/authRouter.js"
 import messageRouter from "./routes/messageRouter.js"
 import userRouter from "./routes/userRouter.js"
 dotenv.config()
 
-const app = express()
 const PORT = process.env.PORT || 5000
 
 app.get("/", (req, res) => {
@@ -22,7 +22,7 @@ app.use("/api/auth", authRouter)
 app.use("/api/message", messageRouter)
 app.use("/api/user", userRouter)
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     connectToMongoose();
     console.log(`Server is running on http://localhost:${PORT}`)
 })

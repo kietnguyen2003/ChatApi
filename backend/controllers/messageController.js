@@ -1,5 +1,7 @@
 import Conservation from "../models/conservationModel.js";
 import Message from "../models/messageModel.js";
+import { getReceiverSocketId } from "../socket/socket.js";
+import { io } from "../socket/socket.js";
 
 export const sendMessages = async (req, res) => {
     try {
@@ -26,7 +28,15 @@ export const sendMessages = async (req, res) => {
             conservation.messages.push(newMessage);
         }
         await Promise.all([newMessage.save(), conservation.save()]);
-        res.status(200).json({ message: "Message sent successfully" })
+
+        //socket
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", newMessage);
+        }
+
+
+        res.status(200).json(newMessage)
     } catch (error) {
         console.log("Error in sendMessages: ", error.message)
         res.status(500).json({ message: "Internal Server Error" })
